@@ -1,0 +1,1759 @@
+/* Kerala Private Bus Mobile App - Design System & Styles */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Chilanka&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --primary-red: #ff2a2a;
+  --primary-glow: rgba(255, 42, 42, 0.45);
+  --accent-gold: #ffcc00;
+  --accent-gold-glow: rgba(255, 204, 0, 0.4);
+  --cyber-cyan: #00e5ff;
+  --cyber-cyan-glow: rgba(0, 229, 255, 0.35);
+  --neon-magenta: #ff007f;
+  --neon-violet: #a855f7;
+  --malabar-green: #10b981;
+
+  --bg-deep: #060d0a;
+  --bg-card: rgba(18, 30, 24, 0.72);
+  --bg-card-hover: rgba(26, 44, 35, 0.85);
+  --bg-glass-heavy: rgba(10, 19, 15, 0.88);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-active: rgba(255, 204, 0, 0.5);
+
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.68);
+  --text-sub: rgba(255, 255, 255, 0.45);
+
+  --font-main: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  --font-malayalam: 'Chilanka', cursive, sans-serif;
+  --font-digital: 'Share Tech Mono', monospace;
+
+  --safe-bottom: env(safe-area-inset-bottom, 16px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* Neon Theme Variations */
+body[data-theme="cyan"] {
+  --primary-red: #00e5ff;
+  --primary-glow: rgba(0, 229, 255, 0.5);
+  --accent-gold: #38bdf8;
+}
+body[data-theme="magenta"] {
+  --primary-red: #ff007f;
+  --primary-glow: rgba(255, 0, 127, 0.5);
+  --accent-gold: #f43f5e;
+}
+body[data-theme="green"] {
+  --primary-red: #10b981;
+  --primary-glow: rgba(16, 185, 129, 0.5);
+  --accent-gold: #84cc16;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #030806;
+  color: var(--text-main);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Outer Desktop Stage Container */
+.desktop-viewport-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #11281e 0%, #050d09 70%, #020503 100%);
+}
+
+/* Subtle Animated Ambient Smoke / Road Blur Background */
+.ambient-bg-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 42, 42, 0.12) 0%, rgba(255, 204, 0, 0.05) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  animation: pulseAmbient 10s ease-in-out infinite alternate;
+}
+
+@keyframes pulseAmbient {
+  0% { transform: scale(0.9) translate(-10%, -10%); opacity: 0.6; }
+  100% { transform: scale(1.15) translate(10%, 10%); opacity: 0.9; }
+}
+
+/* Device Shell for Desktop Preview */
+.mobile-app-shell {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  max-height: 920px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #060e0a;
+  box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* When in Mobile Mockup Frame mode on larger screens */
+@media (min-width: 641px) {
+  .mobile-app-shell.device-framed {
+    height: calc(100vh - 40px);
+    border-radius: 46px;
+    border: 9px solid #1c2621;
+    outline: 2px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Native Mobile Viewport (Takes Full Window) */
+@media (max-width: 640px) {
+  .desktop-viewport-container {
+    padding: 0;
+    background: #000;
+  }
+  .mobile-app-shell {
+    max-width: 100vw;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Expanded Full View Mode for desktop (Full Website Mode) */
+.mobile-app-shell.full-view-mode {
+  max-width: 1080px;
+  width: 94vw;
+  height: 92vh;
+  max-height: 960px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 42, 42, 0.15) !important;
+}
+
+/* Floating Desktop View Mode Switcher Header */
+.desktop-frame-controls {
+  position: fixed;
+  top: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 20, 15, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.mode-indicator-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.btn-frame-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 42, 42, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 42, 42, 0.4);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-main);
+}
+
+.btn-frame-toggle:hover {
+  background: var(--primary-red);
+  color: #fff;
+  border-color: var(--primary-red);
+  box-shadow: 0 0 15px var(--primary-glow);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .desktop-frame-controls {
+    display: none !important;
+  }
+}
+
+/* Background Bus Cabin Wallpaper with dynamic lighting */
+.cabin-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('./assets/bus_cabin.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.38;
+  filter: saturate(1.2) contrast(1.1);
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  pointer-events: none;
+}
+
+body.vibrating .cabin-background {
+  animation: cabinRumble 0.12s linear infinite;
+}
+
+@keyframes cabinRumble {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, 1px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Rain Effect Canvas Overlay on Windshield */
+#rain-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#rain-overlay.active {
+  opacity: 1;
+}
+
+/* Animated Windshield Wipers */
+.wiper-container {
+  position: absolute;
+  bottom: 120px;
+  left: 0;
+  right: 0;
+  height: 180px;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.wiper-container.active {
+  opacity: 0.75;
+}
+
+.wiper-arm {
+  position: absolute;
+  bottom: -20px;
+  width: 4px;
+  height: 150px;
+  background: linear-gradient(to top, #333, #777);
+  transform-origin: bottom center;
+  transform: rotate(-55deg);
+  box-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
+.wiper-arm::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 8px;
+  height: 90px;
+  background: #111;
+  border-radius: 2px;
+}
+
+.wiper-arm.left {
+  left: 28%;
+}
+
+.wiper-arm.right {
+  left: 68%;
+}
+
+.wiper-container.active .wiper-arm {
+  animation: wiperWipe 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes wiperWipe {
+  0% { transform: rotate(-58deg); }
+  100% { transform: rotate(58deg); }
+}
+
+/* Dark Ambient Gradient Layer */
+.cabin-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, 
+    rgba(5, 13, 9, 0.85) 0%, 
+    rgba(6, 15, 11, 0.65) 30%, 
+    rgba(6, 13, 10, 0.82) 70%, 
+    rgba(4, 9, 7, 0.98) 100%
+  );
+  pointer-events: none;
+}
+
+/* Neon Glow Ceiling Strip */
+.cabin-neon-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, 
+    var(--primary-red) 0%, 
+    var(--accent-gold) 35%, 
+    var(--cyber-cyan) 70%, 
+    var(--neon-magenta) 100%
+  );
+  box-shadow: 0 0 16px var(--primary-glow), 0 0 24px var(--accent-gold-glow);
+  z-index: 30;
+}
+
+/* App Header & Mobile Notch/Pill */
+.app-header {
+  position: relative;
+  z-index: 20;
+  padding: 12px 18px 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+/* Conductor Bell Cord Trigger (Hanging Pull Cord) */
+.bell-cord-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.bell-cord-wrapper:active {
+  transform: translateX(-50%) translateY(14px);
+}
+
+.bell-cord-line {
+  width: 3px;
+  height: 24px;
+  background: repeating-linear-gradient(
+    0deg,
+    #ffcc00,
+    #ffcc00 4px,
+    #c43d00 4px,
+    #c43d00 8px
+  );
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+}
+
+.bell-cord-handle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #2b3931, #131d17);
+  border: 1px solid var(--accent-gold);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6), 0 0 8px var(--accent-gold-glow);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bell-cord-handle svg {
+  animation: bellSwing 2s ease-in-out infinite alternate;
+}
+
+@keyframes bellSwing {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+/* Header Brand Info */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-app-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold-glow);
+  object-fit: cover;
+}
+
+.header-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-kerala-badge {
+  font-family: var(--font-malayalam);
+  font-size: 0.82rem;
+  color: var(--accent-gold);
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.header-app-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.header-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon Buttons */
+.btn-icon-soft {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon-soft:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon-soft:active {
+  transform: scale(0.92);
+}
+
+.btn-icon-soft.active {
+  background: var(--primary-red);
+  border-color: var(--primary-red);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Dynamic LED Route Board Pill */
+.led-route-banner {
+  margin: 10px 16px 4px 16px;
+  padding: 8px 14px;
+  background: rgba(4, 10, 8, 0.92);
+  border: 1px solid rgba(255, 204, 0, 0.35);
+  border-radius: 12px;
+  box-shadow: inset 0 0 12px rgba(255, 204, 0, 0.08), 0 4px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.led-route-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.25) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+.led-bus-identity {
+  display: flex;
+  flex-direction: column;
+}
+
+.led-bus-badge {
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.led-bus-name {
+  font-family: var(--font-malayalam);
+  font-size: 1.15rem;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.led-route-stops {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-malayalam);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.led-arrow {
+  color: var(--primary-red);
+  font-size: 1.1rem;
+  animation: blinkArrow 1.5s infinite;
+}
+
+@keyframes blinkArrow {
+  0%, 100% { opacity: 1; transform: translateX(0); }
+  50% { opacity: 0.4; transform: translateX(3px); }
+}
+
+.led-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255, 42, 42, 0.15);
+  border: 1px solid rgba(255, 42, 42, 0.4);
+  border-radius: 20px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ff5252;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff2a2a;
+  box-shadow: 0 0 8px #ff2a2a;
+  animation: blinkLive 1.2s infinite;
+}
+
+@keyframes blinkLive {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* Main Content Area (Tab Views) */
+.app-content-body {
+  flex: 1;
+  position: relative;
+  z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: calc(76px + var(--safe-bottom));
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.app-content-body::-webkit-scrollbar {
+  width: 4px;
+}
+.app-content-body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+/* Tab Screens */
+.tab-screen {
+  display: none;
+  padding: 12px 16px 20px 16px;
+  animation: fadeInTab 0.25s ease-out forwards;
+}
+
+.tab-screen.active {
+  display: block;
+}
+
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================
+   TAB 1: NOW PLAYING / CABIN COCKPIT
+   ======================================================== */
+.cabin-player-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 22px;
+  padding: 16px 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Vintage Private Bus Cassette Tape Deck / Turntable */
+.cassette-console {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.cassette-body {
+  width: 100%;
+  max-width: 320px;
+  height: 160px;
+  background: linear-gradient(145deg, #16241c, #0a130e);
+  border: 2px solid #2e4436;
+  border-radius: 14px;
+  padding: 10px;
+  position: relative;
+  box-shadow: inset 0 2px 8px rgba(255,255,255,0.1), 0 8px 24px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cassette-top-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 4px;
+}
+
+.cassette-brand {
+  font-family: var(--font-digital);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--accent-gold);
+}
+
+.cassette-vu-indicator {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 10px;
+}
+
+.vu-bar {
+  width: 3px;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 1px;
+  transform-origin: bottom;
+}
+
+.vu-bar.active {
+  background: var(--malabar-green);
+}
+.vu-bar.peak {
+  background: var(--primary-red);
+}
+
+.cassette-window {
+  width: 85%;
+  height: 70px;
+  margin: 0 auto;
+  background: rgba(4, 9, 6, 0.9);
+  border: 1.5px solid rgba(255, 204, 0, 0.4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  padding: 0 16px;
+  overflow: hidden;
+}
+
+/* Tape Reels */
+.tape-reel {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2a3d31 35%, #111a14 70%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.tape-spokes {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffcc00;
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+}
+
+.tape-reel.spinning {
+  animation: reelSpin 2s linear infinite;
+}
+
+@keyframes reelSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.tape-bridge {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  right: 25%;
+  height: 8px;
+  background: rgba(255, 42, 42, 0.25);
+  border-top: 1px dashed rgba(255, 204, 0, 0.5);
+  transform: translateY(-50%);
+}
+
+.cassette-label-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 4px;
+}
+
+.cassette-mode {
+  font-family: var(--font-digital);
+  color: var(--cyber-cyan);
+}
+
+/* Floating Album Art / Bus Thumbnail */
+.now-playing-info {
+  margin: 12px 0 10px 0;
+  text-align: center;
+}
+
+.now-playing-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+  letter-spacing: -0.01em;
+}
+
+.now-playing-artist {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Audio Waveform / Spectrum Bars */
+.live-spectrum-bar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 28px;
+  margin: 10px 0;
+}
+
+.spectrum-stem {
+  width: 4px;
+  height: 6px;
+  background: var(--accent-gold);
+  border-radius: 3px;
+  transition: height 0.08s ease;
+}
+
+body.playing .spectrum-stem:nth-child(odd) {
+  animation: spectrumBounce 0.6s ease-in-out infinite alternate;
+}
+body.playing .spectrum-stem:nth-child(even) {
+  animation: spectrumBounce 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes spectrumBounce {
+  0% { height: 4px; background: var(--accent-gold); }
+  50% { height: 26px; background: var(--primary-red); }
+  100% { height: 12px; background: var(--cyber-cyan); }
+}
+
+/* Scrubbing Progress Bar */
+.scrub-progress-wrap {
+  margin: 10px 0 6px 0;
+}
+
+.progress-track-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-track-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-red), var(--accent-gold));
+  border-radius: 999px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.progress-timestamps {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-digital);
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+/* Playback Control Deck */
+.player-controls-deck {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 14px 0 10px 0;
+}
+
+.btn-ctrl {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-ctrl:active {
+  transform: scale(0.9);
+}
+
+.btn-ctrl-secondary {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+}
+
+.btn-ctrl-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-ctrl-play {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold), #e69500);
+  color: #000;
+  box-shadow: 0 4px 18px var(--accent-gold-glow), 0 0 0 3px rgba(255, 204, 0, 0.2);
+}
+
+.btn-ctrl-play:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 24px var(--accent-gold-glow), 0 0 0 5px rgba(255, 204, 0, 0.3);
+}
+
+/* Cabin Action Bar (Big Pneumatic Horn & Conductor Bell) */
+.cockpit-action-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cockpit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  border: none;
+}
+
+.cockpit-btn:active {
+  transform: scale(0.94);
+}
+
+.btn-air-horn {
+  background: linear-gradient(135deg, #ff2a2a, #b31212);
+  color: #fff;
+  border: 1px solid #ff5c5c;
+  box-shadow: 0 6px 16px rgba(255, 42, 42, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+}
+
+.btn-air-horn:active {
+  box-shadow: 0 2px 8px rgba(255, 42, 42, 0.6);
+}
+
+.btn-conductor-bell {
+  background: linear-gradient(135deg, #1b3829, #0d1e15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(255, 204, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 204, 0, 0.2);
+}
+
+/* Volume & Atmosphere Sliders */
+.cabin-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+
+.slider-input {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold-glow);
+  cursor: pointer;
+}
+
+/* ========================================================
+   TAB 2: BUSES FLEET (All 15 Authentic Buses)
+   ======================================================== */
+.section-title-wrap {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.section-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.region-group-card {
+  margin-bottom: 18px;
+}
+
+.region-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.region-badge-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 42, 42, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 42, 42, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.region-title-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.bus-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.bus-item-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bus-item-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 204, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.bus-item-card.active {
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, rgba(30, 50, 40, 0.9), rgba(12, 22, 17, 0.9));
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.2);
+}
+
+.bus-item-card.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-gold);
+}
+
+.bus-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bus-avatar-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1b3527, #0b1812);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.bus-item-card.active .bus-avatar-badge {
+  background: linear-gradient(135deg, var(--primary-red), #b31212);
+  color: #fff;
+  border-color: #ff5252;
+}
+
+.bus-info-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.bus-name-malayalam {
+  font-family: var(--font-malayalam);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.bus-name-english {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  letter-spacing: 0.04em;
+}
+
+.bus-route-path {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bus-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.bus-song-count-pill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  color: var(--text-muted);
+}
+
+.bus-item-card.active .bus-song-count-pill {
+  background: rgba(255, 204, 0, 0.2);
+  color: var(--accent-gold);
+}
+
+/* ========================================================
+   TAB 3: PLAYLIST & SEARCH (Full Track Library)
+   ======================================================== */
+.search-bar-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  background: rgba(18, 30, 24, 0.85);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 14px rgba(255, 204, 0, 0.2);
+}
+
+.search-icon-pos {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-sub);
+  pointer-events: none;
+}
+
+.playlist-filter-pills {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.playlist-filter-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-pill {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.filter-pill.active {
+  background: var(--accent-gold);
+  color: #000;
+  border-color: var(--accent-gold);
+  font-weight: 700;
+}
+
+.track-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.track-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.track-item-row:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.track-item-row.active {
+  border-color: var(--primary-red);
+  background: rgba(255, 42, 42, 0.12);
+}
+
+.track-row-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.track-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #111;
+}
+
+.track-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.track-row-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-row-artist {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-row-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-fav-heart {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  padding: 4px;
+  transition: all 0.2s;
+}
+
+.btn-fav-heart.hearted {
+  color: #ff2a2a;
+  transform: scale(1.15);
+}
+
+/* ========================================================
+   TAB 4: HORN & SOUNDBOARD (Kerala Air Horns & Bells)
+   ======================================================== */
+.soundboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.sound-pad {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: 18px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.sound-pad:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 204, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.sound-pad:active {
+  transform: scale(0.92);
+  background: rgba(255, 204, 0, 0.18);
+  border-color: var(--accent-gold);
+}
+
+.sound-pad-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.sound-pad.red .sound-pad-icon-wrap {
+  background: linear-gradient(135deg, #ff2a2a, #b31212);
+  color: #fff;
+}
+.sound-pad.gold .sound-pad-icon-wrap {
+  background: linear-gradient(135deg, #ffcc00, #c49b00);
+  color: #000;
+}
+.sound-pad.cyan .sound-pad-icon-wrap {
+  background: linear-gradient(135deg, #00e5ff, #0099b8);
+  color: #000;
+}
+.sound-pad.green .sound-pad-icon-wrap {
+  background: linear-gradient(135deg, #10b981, #087550);
+  color: #fff;
+}
+
+.sound-pad-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sound-pad-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-malayalam);
+}
+
+/* Sound Wave Flash Ripple */
+.sound-pad.flashing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 204, 0, 0.3);
+  animation: padRipple 0.3s ease-out;
+}
+
+@keyframes padRipple {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ========================================================
+   TAB 5: AMBIENCE & CABIN SETTINGS
+   ======================================================== */
+.settings-section-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.settings-card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Sleep Timer Quick Select */
+.timer-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.timer-pill-btn {
+  padding: 10px 0;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.timer-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.timer-pill-btn.active {
+  background: var(--primary-red);
+  border-color: var(--primary-red);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.timer-active-notice {
+  margin-top: 10px;
+  font-family: var(--font-digital);
+  font-size: 0.85rem;
+  color: var(--accent-gold);
+  text-align: center;
+  display: none;
+}
+
+.timer-active-notice.show {
+  display: block;
+}
+
+/* Neon Theme Selector */
+.theme-swatches-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.theme-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.1);
+}
+
+.theme-swatch.active {
+  border-color: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+.theme-swatch.red { background: linear-gradient(135deg, #ff2a2a, #ffcc00); }
+.theme-swatch.cyan { background: linear-gradient(135deg, #00e5ff, #0284c7); }
+.theme-swatch.magenta { background: linear-gradient(135deg, #ff007f, #8b5cf6); }
+.theme-swatch.green { background: linear-gradient(135deg, #10b981, #84cc16); }
+
+/* Switch Toggle Row */
+.toggle-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toggle-setting-row:last-child {
+  border-bottom: none;
+}
+
+.toggle-label-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.toggle-desc {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* iOS Style Switch */
+.ios-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.ios-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ios-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.ios-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .ios-slider {
+  background-color: var(--accent-gold);
+}
+
+input:checked + .ios-slider:before {
+  transform: translateX(20px);
+}
+
+/* Install PWA Button */
+.btn-install-pwa {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #163625, #0d2116);
+  border: 1px solid var(--accent-gold);
+  border-radius: 14px;
+  color: var(--accent-gold);
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s;
+}
+
+.btn-install-pwa:hover {
+  background: linear-gradient(135deg, #1f4a33, #112d1f);
+  box-shadow: 0 6px 18px var(--accent-gold-glow);
+}
+
+/* ========================================================
+   BOTTOM NAVIGATION BAR (Mobile Dock)
+   ======================================================== */
+.mobile-bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  height: calc(66px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: rgba(8, 16, 12, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.nav-tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.nav-tab-btn svg {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-tab-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nav-tab-btn.active {
+  color: var(--accent-gold);
+}
+
+.nav-tab-btn.active svg {
+  transform: translateY(-2px);
+  color: var(--accent-gold);
+}
+
+.nav-tab-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 32px;
+  height: 3px;
+  background: var(--accent-gold);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 0 10px var(--accent-gold-glow);
+}
+
+/* Floating Desktop Helper Bar (Mobile Frame Toggle & Fullscreen) */
+.desktop-frame-controls {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .desktop-frame-controls {
+    display: none;
+  }
+}
+
+.btn-frame-toggle {
+  background: rgba(14, 25, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s;
+}
+
+.btn-frame-toggle:hover {
+  background: rgba(25, 45, 35, 0.95);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Fullscreen Modal Overlays */
+.app-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.app-modal-overlay.open {
+  display: flex;
+}
+
+.app-modal-sheet {
+  width: 100%;
+  max-width: 360px;
+  background: #0f1e16;
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+}
+
+.modal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.modal-header-row h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-body-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Hidden YouTube Player Host */
+#hidden-yt-wrapper {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  top: -100px;
+  left: -100px;
+}

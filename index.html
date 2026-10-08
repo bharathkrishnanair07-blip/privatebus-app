@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Kerala Private Bus - Nostalgia Mobile App</title>
+  <meta name="description" content="Experience the high-speed nostalgia of Kerala's Private Buses with authentic musical air horns, conductor bells, route boards, and high-speed Malayalam bangers." />
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#ff2a2a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Private Bus" />
+  <link rel="apple-touch-icon" href="./assets/icon.jpg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kerala Private Bus - Mobile App" />
+  <meta property="og:description" content="Kerala's finest high-speed bangers, authentic musical air horns & conductor bells." />
+  <meta property="og:image" content="./assets/icon.jpg" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+  <!-- Desktop Presentation Outer Viewport -->
+  <div class="desktop-viewport-container">
+    <div class="ambient-bg-glow"></div>
+
+    <!-- Mobile Smartphone Shell -->
+    <div class="mobile-app-shell device-framed" id="mobile-shell">
+
+      <!-- Bus Cockpit Background Wallpaper -->
+      <div class="cabin-background"></div>
+
+      <!-- Rain Canvas Overlay -->
+      <canvas id="rain-overlay"></canvas>
+
+      <!-- Windshield Wipers -->
+      <div class="wiper-container" id="wiper-container">
+        <div class="wiper-arm left"></div>
+        <div class="wiper-arm right"></div>
+      </div>
+
+      <!-- Ambient Lighting & Shading Layer -->
+      <div class="cabin-overlay"></div>
+
+      <!-- Top Neon Roof LED Strip -->
+      <div class="cabin-neon-strip"></div>
+
+      <!-- Hanging Overhead Conductor Bell Pull Cord -->
+      <div class="bell-cord-wrapper" id="bell-cord" title="Pull Conductor Bell Cord">
+        <div class="bell-cord-line"></div>
+        <div class="bell-cord-handle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+          </svg>
+          <span>ബെൽ PULL</span>
+        </div>
+      </div>
+
+      <!-- Mobile App Header Bar -->
+      <header class="app-header">
+        <div class="header-brand">
+          <img src="./assets/icon.jpg" alt="Kerala Bus Icon" class="header-app-icon" />
+          <div class="header-title-wrap">
+            <span class="header-kerala-badge">കേരള പ്രൈവറ്റ് ബസ്</span>
+            <span class="header-app-name">PRIVATE BUS</span>
+          </div>
+        </div>
+
+        <div class="header-quick-actions">
+          <button id="btn-mute-toggle" class="btn-icon-soft" aria-label="Mute Audio">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </button>
+          <button id="btn-about-info" class="btn-icon-soft" aria-label="About">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Illuminated LED Destination & Route Board -->
+      <div class="led-route-banner">
+        <div class="led-bus-identity">
+          <span class="led-bus-badge">ROUTE BOARD · റൂട്ട് ബോർഡ്</span>
+          <span class="led-bus-name" id="led-bus-name">മയിൽവാഹനം</span>
+        </div>
+        <div class="led-route-stops">
+          <span id="route-start">പാലക്കാട്</span>
+          <span class="led-arrow">⟶</span>
+          <span id="route-end">ഷൊർണൂർ</span>
+        </div>
+        <div class="led-live-indicator">
+          <span class="pulse-dot"></span>
+          <span>HIGH SPEED</span>
+        </div>
+      </div>
+
+      <!-- Scrollable Tabbed Content Body -->
+      <main class="app-content-body">
+
+        <!-- ====================================================
+             TAB 1: CABIN COCKPIT (NOW PLAYING)
+             ==================================================== -->
+        <section class="tab-screen active" id="tab-cabin">
+          <div class="cabin-player-card">
+
+            <!-- Retro Bus Cassette Stereo Player -->
+            <div class="cassette-console">
+              <div class="cassette-body">
+                <div class="cassette-top-strip">
+                  <span class="cassette-brand">★ KERALA HIGHWAY STEREO ★</span>
+                  <div class="cassette-vu-indicator">
+                    <div class="vu-bar active"></div>
+                    <div class="vu-bar active"></div>
+                    <div class="vu-bar active"></div>
+                    <div class="vu-bar peak"></div>
+                  </div>
+                </div>
+
+                <div class="cassette-window">
+                  <div class="tape-reel">
+                    <div class="tape-spokes"></div>
+                  </div>
+                  <div class="tape-bridge"></div>
+                  <div class="tape-reel">
+                    <div class="tape-spokes"></div>
+                  </div>
+                </div>
+
+                <div class="cassette-label-bar">
+                  <span>HIGH-SPEED STEREO CASSETTE</span>
+                  <span class="cassette-mode">HQ HI-FI 90s</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Track Info -->
+            <div class="now-playing-info">
+              <h2 class="now-playing-title" id="now-track-title">Aaruparanju</h2>
+              <p class="now-playing-artist" id="now-track-artist">Berny-Ignatius & K.S. Chithra</p>
+            </div>
+
+            <!-- Audio Equalizer Spectrum Bounce -->
+            <div class="live-spectrum-bar-wrap">
+              <div class="spectrum-stem" style="height: 12px;"></div>
+              <div class="spectrum-stem" style="height: 18px;"></div>
+              <div class="spectrum-stem" style="height: 24px;"></div>
+              <div class="spectrum-stem" style="height: 14px;"></div>
+              <div class="spectrum-stem" style="height: 22px;"></div>
+              <div class="spectrum-stem" style="height: 28px;"></div>
+              <div class="spectrum-stem" style="height: 16px;"></div>
+              <div class="spectrum-stem" style="height: 20px;"></div>
+            </div>
+
+            <!-- Scrubbing Progress Bar -->
+            <div class="scrub-progress-wrap">
+              <div class="progress-track-bg" id="progress-track">
+                <div class="progress-track-fill" id="progress-bar-fill"></div>
+              </div>
+              <div class="progress-timestamps">
+                <span id="time-current">0:00</span>
+                <span id="time-total">0:00</span>
+              </div>
+            </div>
+
+            <!-- Player Controls Deck -->
+            <div class="player-controls-deck">
+              <button class="btn-ctrl btn-ctrl-secondary" id="btn-prev" aria-label="Previous Track">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+              </button>
+
+              <button class="btn-ctrl btn-ctrl-play" id="btn-play-pause" aria-label="Play or Pause">
+                <svg id="icon-play" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="icon-pause" style="display:none;" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+
+              <button class="btn-ctrl btn-ctrl-secondary" id="btn-next" aria-label="Next Track">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 6h2v12h-2zm-2 6L5.5 6v12z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Cockpit Quick Trigger Buttons (Air Horn & Conductor Bell) -->
+            <div class="cockpit-action-bar">
+              <button class="cockpit-btn btn-air-horn" id="btn-air-horn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <span>AIR HORN · ഹോൺ</span>
+              </button>
+
+              <button class="cockpit-btn btn-conductor-bell" id="btn-cockpit-bell">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                </svg>
+                <span>BELL · ബെൽ</span>
+              </button>
+            </div>
+
+            <!-- Throttle Accelerator Button -->
+            <div style="margin-top: 10px;">
+              <button class="cockpit-btn" id="btn-engine-rev" style="width: 100%; background: linear-gradient(135deg, #19382b, #0d2118); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--malabar-green);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+                </svg>
+                <span>ACCELERATE & REV · ആക്സിലറേറ്റർ</span>
+              </button>
+            </div>
+
+            <!-- Volume Adjuster -->
+            <div class="cabin-volume-row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text-sub);">
+                <path d="M7 9v6h4l5 5V4L11 9H7z"/>
+              </svg>
+              <input type="range" class="slider-input" id="volume-slider" min="0" max="100" value="85" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text-sub);">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+              </svg>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ====================================================
+             TAB 2: BUSES FLEET (ALL 15 AUTHENTIC KERALA BUSES)
+             ==================================================== -->
+        <section class="tab-screen" id="tab-fleet">
+          <div class="section-title-wrap">
+            <span class="section-label">KERALA PRIVATE BUS NETWORK</span>
+            <h2 class="section-heading">തിരഞ്ഞെടുക്കൂ (Select Bus)</h2>
+          </div>
+
+          <!-- North Malabar -->
+          <div class="region-group-card">
+            <div class="region-header">
+              <span class="region-badge-pill">NORTH</span>
+              <span class="region-title-text">North Malabar Region (വടക്കൻ മലബാർ)</span>
+            </div>
+            <div class="bus-cards-grid" id="grid-north-malabar"></div>
+          </div>
+
+          <!-- Central Kerala -->
+          <div class="region-group-card">
+            <div class="region-header">
+              <span class="region-badge-pill" style="background:rgba(255,204,0,0.2); color:var(--accent-gold); border-color:rgba(255,204,0,0.4);">CENTRAL</span>
+              <span class="region-title-text">Central Kerala (മധ്യകേരളം)</span>
+            </div>
+            <div class="bus-cards-grid" id="grid-central-kerala"></div>
+          </div>
+
+          <!-- South Kerala -->
+          <div class="region-group-card">
+            <div class="region-header">
+              <span class="region-badge-pill" style="background:rgba(16,185,129,0.2); color:var(--malabar-green); border-color:rgba(16,185,129,0.4);">SOUTH</span>
+              <span class="region-title-text">South Kerala (തെക്കൻ കേരളം)</span>
+            </div>
+            <div class="bus-cards-grid" id="grid-south-kerala"></div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             TAB 3: PLAYLIST & SEARCH
+             ==================================================== -->
+        <section class="tab-screen" id="tab-songs">
+          <div class="section-title-wrap">
+            <span class="section-label">CASSETTE HIT COLLECTION</span>
+            <h2 class="section-heading">പാട്ടുകൾ (Songs & Bangers)</h2>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-bar-wrap">
+            <svg class="search-icon-pos" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-songs-input" class="search-input" placeholder="Search song title, singer, film..." />
+          </div>
+
+          <!-- Filters -->
+          <div class="playlist-filter-pills">
+            <button class="filter-pill active" data-filter="current">Current Bus</button>
+            <button class="filter-pill" data-filter="favorites">❤️ Favorites</button>
+          </div>
+
+          <!-- Dynamic Songs List -->
+          <div class="track-list-container" id="track-list-container"></div>
+        </section>
+
+        <!-- ====================================================
+             TAB 4: HORN & SFX SOUNDBOARD
+             ==================================================== -->
+        <section class="tab-screen" id="tab-sfx">
+          <div class="section-title-wrap">
+            <span class="section-label">PNEUMATIC SOUNDBOARD</span>
+            <h2 class="section-heading">ഹോൺ & ബെല്ലുകൾ (SFX)</h2>
+          </div>
+
+          <div class="soundboard-grid">
+            <!-- Classic Air Horn -->
+            <div class="sound-pad red" data-sound="air-horn">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">Classic Air Horn</span>
+              <span class="sound-pad-subtitle">ഒറിജിനൽ എയർ ഹോൺ</span>
+            </div>
+
+            <!-- Musical Fanfare Horn -->
+            <div class="sound-pad gold" data-sound="musical-horn">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">3-Tone Melody Horn</span>
+              <span class="sound-pad-subtitle">മ്യൂസിക്കൽ ട്രിപ്പിൾ ഹോൺ</span>
+            </div>
+
+            <!-- Reverse Melody Horn -->
+            <div class="sound-pad cyan" data-sound="reverse-horn">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">Reverse Chime Horn</span>
+              <span class="sound-pad-subtitle">റിവേഴ്സ് സൈറൺ ട്യൂൺ</span>
+            </div>
+
+            <!-- Conductor Single Bell (Stop) -->
+            <div class="sound-pad green" data-sound="bell-stop">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">1 Bell (Stop)</span>
+              <span class="sound-pad-subtitle">ടിങ്! (നിർത്തുക)</span>
+            </div>
+
+            <!-- Conductor Double Bell (Start) -->
+            <div class="sound-pad gold" data-sound="bell-start">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">2 Bells (Start)</span>
+              <span class="sound-pad-subtitle">ടിങ് ടിങ്! (എടുക്കൂ)</span>
+            </div>
+
+            <!-- Air Brake Exhaust Hiss -->
+            <div class="sound-pad cyan" data-sound="air-brake">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">Air Brake Hiss</span>
+              <span class="sound-pad-subtitle">എയർ ബ്രേക്ക് (Pssssht)</span>
+            </div>
+
+            <!-- Engine Rev -->
+            <div class="sound-pad red" data-sound="engine-rev" style="grid-column: span 2;">
+              <div class="sound-pad-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+                </svg>
+              </div>
+              <span class="sound-pad-title">Heavy Diesel Engine Rev</span>
+              <span class="sound-pad-subtitle">ടർബോ ഡീസൽ എൻജിൻ മുരൾച്ച</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             TAB 5: AMBIENCE & SETTINGS
+             ==================================================== -->
+        <section class="tab-screen" id="tab-ambience">
+          <div class="section-title-wrap">
+            <span class="section-label">NIGHT DRIVE & AMBIENCE</span>
+            <h2 class="section-heading">യാത്രാ അന്തരീക്ഷം (Atmosphere)</h2>
+          </div>
+
+          <!-- Sleep Timer -->
+          <div class="settings-section-card">
+            <h3 class="settings-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent-gold);">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              </svg>
+              <span>Sleep Timer (ഓട്ടോ സ്റ്റോപ്പ്)</span>
+            </h3>
+            <div class="timer-pill-grid">
+              <button class="timer-pill-btn" data-mins="15">15 min</button>
+              <button class="timer-pill-btn" data-mins="30">30 min</button>
+              <button class="timer-pill-btn" data-mins="60">60 min</button>
+              <button class="timer-pill-btn active" data-mins="0">Off</button>
+            </div>
+            <div class="timer-active-notice" id="timer-notice"></div>
+          </div>
+
+          <!-- Monsoon Rain on Windshield Toggle -->
+          <div class="settings-section-card">
+            <div class="toggle-setting-row">
+              <div class="toggle-label-wrap">
+                <span class="toggle-title">Kerala Monsoon Rain & Wipers</span>
+                <span class="toggle-desc">മഴത്തുള്ളികളും വൈപ്പറുകളും (Rain patter & moving wipers)</span>
+              </div>
+              <label class="ios-switch">
+                <input type="checkbox" id="rain-toggle" />
+                <span class="ios-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-setting-row">
+              <div class="toggle-label-wrap">
+                <span class="toggle-title">Engine Vibration & Rumble</span>
+                <span class="toggle-desc">ബസ് ക്യാബിൻ വിറയൽ (Subtle vehicle suspension shake)</span>
+              </div>
+              <label class="ios-switch">
+                <input type="checkbox" id="rumble-toggle" />
+                <span class="ios-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Neon LED Lighting Scheme -->
+          <div class="settings-section-card">
+            <h3 class="settings-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent-gold);">
+                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+              </svg>
+              <span>Cabin Neon Lights (ഡിസ്കോ ലൈറ്റുകൾ)</span>
+            </h3>
+            <div class="theme-swatches-row">
+              <div class="theme-swatch red active" data-theme="default" title="Palakkad Crimson"></div>
+              <div class="theme-swatch cyan" data-theme="cyan" title="Malabar Cyber Cyan"></div>
+              <div class="theme-swatch magenta" data-theme="magenta" title="Thrissur Magenta"></div>
+              <div class="theme-swatch green" data-theme="green" title="Wayanad Emerald"></div>
+            </div>
+          </div>
+
+          <!-- Install Mobile PWA App Button -->
+          <div class="settings-section-card" style="text-align: center;">
+            <button class="btn-install-pwa" id="btn-install-app">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+              </svg>
+              <span>INSTALL AS MOBILE APP (ഫോണിൽ ഇൻസ്റ്റാൾ ചെയ്യൂ)</span>
+            </button>
+            <p style="font-size: 0.72rem; color: var(--text-sub); margin-top: 8px;">
+              Works offline & runs full-screen like a native app on iOS & Android.
+            </p>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Navigation Dock -->
+      <nav class="mobile-bottom-nav">
+        <!-- Tab 1: Cabin -->
+        <button class="nav-tab-btn active" data-tab="cabin">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+          <span class="nav-tab-label">ക്യാബിൻ</span>
+        </button>
+
+        <!-- Tab 2: Fleet -->
+        <button class="nav-tab-btn" data-tab="fleet">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-1.38 0-2.5-1.12-2.5-2.5S6.12 12 7.5 12 10 13.12 10 14.5 8.88 17 7.5 17zm9 0c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM6 10V6h12v4H6z"/>
+          </svg>
+          <span class="nav-tab-label">ബസുകൾ</span>
+        </button>
+
+        <!-- Tab 3: Songs -->
+        <button class="nav-tab-btn" data-tab="songs">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18c-.31-.11-.65-.18-1-.18-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V8h3V6h-5z"/>
+          </svg>
+          <span class="nav-tab-label">പാട്ടുകൾ</span>
+        </button>
+
+        <!-- Tab 4: SFX / Horn -->
+        <button class="nav-tab-btn" data-tab="sfx">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          </svg>
+          <span class="nav-tab-label">ഹോൺ</span>
+        </button>
+
+        <!-- Tab 5: Ambience -->
+        <button class="nav-tab-btn" data-tab="ambience">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.37 5.51C9.19 6.15 9.1 6.82 9.1 7.5c0 4.08 3.32 7.4 7.4 7.4.68 0 1.35-.09 1.99-.27C17.45 17.19 14.93 19 12 19c-3.86 0-7-3.14-7-7 0-2.93 1.81-5.45 4.37-6.49zM12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+          </svg>
+          <span class="nav-tab-label">യാത്ര</span>
+        </button>
+      </nav>
+
+    </div><!-- /.mobile-app-shell -->
+  </div><!-- /.desktop-viewport-container -->
+
+  <!-- Floating Desktop Frame Switcher Toggle -->
+  <aside class="desktop-frame-controls">
+    <span class="mode-indicator-label">VIEW MODE</span>
+    <button class="btn-frame-toggle" id="btn-frame-toggle" title="Switch between Mobile Phone App and Full Website">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4 6h16v12H4z"/>
+      </svg>
+      <span>Switch to Full Website View 💻</span>
+    </button>
+  </aside>
+
+  <!-- About Modal Dialog -->
+  <div class="app-modal-overlay" id="about-modal">
+    <div class="app-modal-sheet">
+      <div class="modal-header-row">
+        <h3>About Kerala Private Bus</h3>
+        <button class="modal-close-btn" id="btn-close-about" aria-label="Close">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body-text">
+        <p style="margin-bottom: 12px;">
+          Experience the high-speed nostalgia of Kerala's Private Buses with their authentic musical air horns, conductor bells, route boards, and iconic Malayalam movie bangers.
+        </p>
+        <p style="font-size:0.8rem; color:var(--accent-gold); margin-bottom: 14px;">
+          <strong>Shortcuts:</strong> [P] Play/Pause · [K] Next · [J] Prev · [X] Air Horn · [B] Conductor Bell · [N] Next Bus
+        </p>
+        <div style="display:flex; gap:8px;">
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" style="flex:1; text-align:center; padding:10px; background:rgba(255,255,255,0.1); border-radius:10px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">
+            GitHub
+          </a>
+          <a href="https://www.buymeacoffee.com/krishnaananth" target="_blank" rel="noopener noreferrer" style="flex:1; text-align:center; padding:10px; background:#ff5f5f; border-radius:10px; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">
+            Coffee ☕
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden YouTube IFrame Container -->
+  <div id="hidden-yt-wrapper">
+    <div id="yt-iframe-placeholder"></div>
+  </div>
+
+  <!-- Audio Engine & App Scripts -->
+  <script src="./audio-engine.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
